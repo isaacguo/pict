@@ -346,6 +346,7 @@ void CResult::PrintOutput( CModelData& modelData )
     setEncodingType( modelData.GetEncoding(), encodingPrefix );
     wcout << encodingPrefix;
 
+	/*
     for( vector< CModelParameter >::iterator i_param = modelData.Parameters.begin();
                                              i_param != modelData.Parameters.end();
                                              i_param++ )
@@ -354,24 +355,53 @@ void CResult::PrintOutput( CModelData& modelData )
         wcout << i_param->Name;
     }
     wcout << endl;
+	*/
+
+	/*
+	for (int i = 0; i < TestCases.size; i++)
+	{
+	}
+	*/
+
+	wcout << wstring(L"[") << endl;
 
     for( vector< CRow >::iterator i_row = TestCases.begin();
                                   i_row != TestCases.end();
                                   i_row++ )
     {
+
+	wcout << wstring(L"{\"elements\":[") << endl;
+
         for( wstrings::iterator i_value = i_row->DecoratedValues.begin();
                                 i_value != i_row->DecoratedValues.end();
                                 i_value++ )
         {
+
+			int index = i_value - i_row->DecoratedValues.begin();
+			
+
             if( i_value != i_row->DecoratedValues.begin() )
             {
-                wcout << RESULT_DELIMITER;
+				wcout << ','; //RESULT_DELIMITER;
             }
-            wcout << *i_value;
+			wcout << wstring(L"{\"factorName\":\"") << modelData.Parameters[index].Name << wstring(L"\", \"levelValue\":\"") << *i_value << wstring(L"\"}");
         }
+		wcout << wstring(L"]}") << endl;
+
+		if (i_row != TestCases.end() - 1)
+		{
+           wcout << wstring(L",") << endl;
+		}
+
+
         wcout << endl;
     }
+
+
+    wcout << wstring(L"]") << endl;
+
 }
+
 
 //
 //
